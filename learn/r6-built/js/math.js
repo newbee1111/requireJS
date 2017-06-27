@@ -1,0 +1,1 @@
+define("math",[],function(){var n=function(n,r){return n+r};return{add:n}});

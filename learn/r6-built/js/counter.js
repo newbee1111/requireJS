@@ -1,0 +1,1 @@
+define("math",[],function(){var n=function(n,t){return n+t};return{add:n}}),require.config({baseUrl:"js",paths:{math:"math"}}),define("counter",["math"],function(n){var t=0,r=function(){return n.add(t,1)};return{countOne:r}});

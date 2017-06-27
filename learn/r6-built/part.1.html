@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 原始写法
+        function alertModal(args) {
+            alert(args);
+        }
+        function confirmModal(args) {
+            confirm(args);
+        }
+
+        alertModal('what the fuck');
+
+        //这样就可以简单的认为alertModal和confirmModal就是一个模块，但是这样子window作用域会被污染，并且可以直接访问到模块中的方法。
+
+        //对象法。
+        var modal = {
+            str : 'bullshit',
+            alertModal:function () {
+                alert(this.str);
+            },
+            confirmModal:function () {
+                confirm(this.str);
+            }
+        };
+        modal.alertModal();
+        //这样阻止了变量破坏全局域，但是，外部可以轻松的修改modal对象中的变量方法，这样也不好。
+
+        //立即执行函数的方法
+        var modalFun = (function () {
+            var str = 'I am the best';
+            var alertModal = function () {
+                alert(str);
+            };
+            var confirmModal = function () {
+                confirm(str);
+            };
+            return {
+                alertModal:alertModal,
+                confirmModal:confirmModal
+            }
+        })();
+        modalFun.alertModal();
+        //立即函数的写法就是JS模块实现的基本方法，即不会污染全局域，也不会让内部变量被外部改变。
+
+        //放大模式：实现模块间的继承与方法传递。
+        var modalFun = (function (mod) {
+            mod.promptModal = function (str) {
+                prompt(str);
+            };
+            return mod;
+        })(modalFun);
+        modalFun.promptModal('123456');
+
+        //实际项目中，模块往往是外部加载的，当模块未加载完成时，就会出现Null的错误，因此要预防。
+        //宽放大模式
+
+        var modalFun = (function (mod) {
+            //...
+        })(modalFun || {}); //这里进行了选择，如果modalFun还未加载完成，那么就传入一个空对象避免错误。
+
+        //传入全局变量，模块应该具有相当高的独立性，而不能在内部直接依赖其他库，应当以参数的形式传入
+
+        var example = (function ($) {
+            //$ ...可以调用jq的方法
+        })(jQuery);
+    </script>
+</body>
+</html>
