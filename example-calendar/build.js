@@ -1,7 +1,7 @@
 ({
     appDir:'./',
     baseUrl:'js',
-    dir:'./r6-built',
+    dir:'./calendar-build',
     paths:{
         jquery:'empty:'
     },
